@@ -1,9 +1,11 @@
 const axios = require('axios');
 const { Pokemon, Type } = require('../db.js')
 
+let arrNames = []//agiliza las respuestas del server
+let apiPokesData = []
 
 const pokeNameExist = async (name) => {
-    const arrNames = []
+
     name = name.toLowerCase()
     if (!arrNames.length) {
         const { data } = await axios(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=-1}`)
@@ -15,7 +17,7 @@ const pokeNameExist = async (name) => {
 
 const getApiPokes = async (pag = 0, count = 150) => {
     try {
-        let apiPokesData = []
+        if (apiPokesData.length) return apiPokesData
         let apiPokesPromise = []
         const { data } = await axios(`https://pokeapi.co/api/v2/pokemon?offset=${pag}&limit=${count}`)
         data.results.map(async poke => {
@@ -48,23 +50,33 @@ const getApiPokes = async (pag = 0, count = 150) => {
 
 getAll = async (req, res) => {
     try {
-        const { pag, count } = req.body
-        const apiPokes = await getApiPokes(pag, count)
-        let data = apiPokes.map(poke => {
-            return { id: poke.id, image: poke.image, types: poke.types }
-        })
-        let bdPokes= await Pokemon.findAll({ include: Type } )
-        if(bdPokes.length){
-            let data2= bdPokes.map(poke=>{
-                return { 
-                    id: poke.id, 
-                    image: poke.image, 
-                    types: poke.types.map(type => type.name) }
+        const { name } = req.query
+        if (name) {//busco por nombre
+            getByName(req, res)
+        } else {
+            const { pag, count } = req.body//por si especifico alguna paginacion
+            const apiPokes = await getApiPokes(pag, count)
+            let data = apiPokes.map(poke => {
+                return { id: poke.id, name: poke.name, image: poke.image, attack: poke.attack, types: poke.types }
             })
-            data= data2.concat(data)
+            let bdPokes = await Pokemon.findAll({ include: Type })
+            if (bdPokes.length) {
+                let data2 = bdPokes.map(poke => {
+                    return {
+                        id: poke.id,
+                        name: poke.name,
+                        image: poke.image,
+                        attack: poke.attack,
+                        types: poke.types.map(type => type.name)
+                    }
+                })
+                data = data2.concat(data)
+            }
+
+            res.send(data)
         }
-        
-        res.send(data)
+
+
     } catch (error) {
         res.send(error)
     }
@@ -79,16 +91,16 @@ getById = async (req, res) => {
         if (isNaN(idPokemon)) {
             //busca en la bd ya que los id de la api son numericos
             let findById = await Pokemon.findByPk(idPokemon)
-            console.log(findById)
+
             if (findById) {
                 const getTypes = await findById.getTypes()
                 const types = getTypes.map(el => el.dataValues.name)
-                let pokeData = findById.dataValues
-                pokeData.types = types
-                return res.status(200).send(pokeData)
+                let data = findById.dataValues
+                data.types = types
+                return res.status(200).send(data)
             }
 
-            return res.status(404).send({ messaje: 'Pokemon not found' })
+            return res.status(200).send({ message: 'Pokemon not found' })
         } else {
             const { data } = await axios(`https://pokeapi.co/api/v2/pokemon/${idPokemon}`)
             pokeData = data
@@ -107,21 +119,25 @@ getById = async (req, res) => {
                 types: pokeData.types.map(type => type.type.name)
             })
         } else {
-            return res.status(404).send({ messaje: 'Pokemon not found' })
+            return res.status(200).send({ message: 'Pokemon not found' })
         }
 
     } catch (error) {//no reenvio error al cliente porque va con datos de la conexion
-        res.status(404).send({ messaje: 'Pokemon not found, dont insert id manually' })
+        res.status(404).send({ message: 'Pokemon not found, dont insert id manually' })
     }
 }
 
 getByName = async (req, res) => {
     try {
-        const { name } = req.query
+
+        let { name } = req.query
+
         if (!name) return res.status(400).send({ message: 'name must be provided' })
+        name = name.toLowerCase()
         //busca en el array de names para prevenir error 404
         if (await pokeNameExist(name)) {
             const { data } = await axios(`https://pokeapi.co/api/v2/pokemon/${name}`)
+
             return res.status(200).send({
                 id: data.id,
                 name: data.name,
@@ -137,6 +153,7 @@ getByName = async (req, res) => {
         } else {
             //busca en la bd
             let findByName = await Pokemon.findOne({ where: { name } })
+
             if (findByName) {
                 const getTypes = await findByName.getTypes()
                 const types = getTypes.map(el => el.dataValues.name)
@@ -145,8 +162,9 @@ getByName = async (req, res) => {
                 return res.status(200).send(pokeData)
             }
         }
-        return res.status(404).send({ message: 'Pokemon not found' })
+        return res.status(200).send({ message: 'Pokemon not found' })
     } catch (error) {
+
         res.status(404).send(error)
     }
 }
@@ -154,20 +172,24 @@ getByName = async (req, res) => {
 
 postNew = async (req, res) => {
     try {
-        const { name, image, hp, attack, defense, speed, height, weight, types } = req.body
-        if (!name || !image || !hp || !attack || !defense || !speed || !height || !weight || !types) return res.status(400).send({ message: 'Complete all fields' })
+        let { name, image, hp, attack, defense, speed, height, weight, types } = req.body
+
+        if (!name || !image || !hp || !attack || !defense || !speed || !height || !weight || !types.length) return res.status(400).send({ message: 'Complete all fields' })
+        name = name.toLowerCase()
         if (await pokeNameExist(name)) {//evita duplicacion de nombre con la api
             return res.status(400).send({ message: 'Name already exist' })
         }
         let newPoke = await Pokemon.create({ name, image, hp, attack, defense, speed, height, weight })
 
-        types.forEach(async (id) => {//agrego las relaciones
-            const type = await Type.findByPk(id)
-            await newPoke.addTypes(type)
-        })
+        const poketypes = await Promise.all(
+            types.map(async (id) => {
+                const type = await Type.findByPk(id)
+                await newPoke.addTypes(type)//agrego las relaciones
+                return type.dataValues.name
+            })
+        )
 
-
-        return res.status(201).send({ id: newPoke.id })
+        return res.status(201).send({ id: newPoke.id, name, image, hp, attack, defense, speed, height, weight, types: poketypes })
     } catch (error) {
         res.status(404).send(error)
     }
