@@ -2,7 +2,7 @@ import { useEffect,useState } from "react";
 import { useParams ,useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
-import { getPokeDetail } from '../redux/actions.js'
+import { getPokeDetail } from '../../redux/actions.js'
 
 
 
@@ -20,7 +20,7 @@ margin-top: 100px
 
 export default function Details(props) {
 const  {detailId}= useParams()
-const [poke,setPoke]= useState()
+const [poke,setPoke]= useState(null)
 
 const dispatch = useDispatch()
 const pokeDetail = useSelector((state) => state.detail)
@@ -35,14 +35,14 @@ useEffect(() => {
   }, [detailId])
 
   useEffect(() => {
-    if(pokeDetail.id)setPoke(pokeDetail)
+    if(pokeDetail.id==detailId)setPoke(pokeDetail)
     }, [pokeDetail])
 
 
 
     return (
       <div>
-    {poke && <><StyledDiv>
+    {poke ? <><StyledDiv>
         <div>
           <h1> {poke.name.toUpperCase()}</h1>
         <hr></hr>
@@ -53,11 +53,12 @@ useEffect(() => {
           <h2>Velocidad: {poke.speed}</h2>
           <h2>Altura: {poke.height}</h2>
           <h2>Peso: {poke.weight}</h2>
+          <h2>Tipos: {poke.types.toString().replace(/,/g," - ")}</h2>
         </div>
        </StyledDiv>
        <StyledDiv>
           <StyledImg src={poke.image} alt={`imagen de ${poke.name}`} />
-       </StyledDiv></>}
+       </StyledDiv></>: <h2>Loading...</h2>}
           <button onClick={()=>navigate('/home')}>Volver</button>
       </div>
        

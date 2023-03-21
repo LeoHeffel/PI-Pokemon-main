@@ -1,6 +1,6 @@
-import React from "react";
+
 import { Link } from "react-router-dom";
-import SearchBar from "./SearchBar.jsx";
+import SearchBar from "../searchBar/SearchBar.jsx";
 import styled from "styled-components";
 
 

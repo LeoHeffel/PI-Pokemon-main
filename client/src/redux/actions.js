@@ -4,17 +4,19 @@ import axios from 'axios'
 
 
 
-export const filterCards = (status) => {
+export const filterCards = (filter) => {
     return {
         type: "FILTER",
-        payload: status
+        payload: filter
     }
 }
 
-export const orderCards = (id) => {
+export const orderCards = (field, order) => {
     return {
         type: "ORDER",
-        payload: id
+        payload: {
+            field, order
+        }
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////

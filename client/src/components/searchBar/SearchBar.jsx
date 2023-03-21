@@ -1,8 +1,8 @@
-import { useParams ,useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { useEffect, useState } from 'react'
 import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
-import { searchPoke } from '../redux/actions.js'
+import { searchPoke } from '../../redux/actions.js'
 
 
 const Button = styled.button`
@@ -22,25 +22,24 @@ text-align: right;
 
 export default function SearchBar() {
    const navigate = useNavigate()
-   const [character,setCharacter]=useState("")
+   const [name,setName]=useState("")
    const dispatch = useDispatch()
    const pokeDetail = useSelector((state) => state.detail)
-
+   const regex =/^[A-Z]+$/i
 
    const handleChange=(e)=>{
-      setCharacter(e.target.value)
-      //insertar validaciones
+
+      setName(e.target.value)
+      
    }
 
    const handleSearch =()=>{
-      let name = character
-      if(name)dispatch(searchPoke(name))
+      
+      if(regex.test(name))dispatch(searchPoke(name))
       else window.alert('ingrese un nombre valido') 
    }
    useEffect(() => {
-      if(pokeDetail.id){
-         //navigate details
-         
+      if(pokeDetail.id){ 
          navigate(`/detail/${pokeDetail.id}`)
       }
       if(pokeDetail.message){
@@ -49,7 +48,7 @@ export default function SearchBar() {
       }
     }, [pokeDetail])
 
-//modal con detalles poke buscado
+
    return (
       <Div >
          <Input type='text'  placeholder="Buscar"  onChange={handleChange}/>

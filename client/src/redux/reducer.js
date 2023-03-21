@@ -1,8 +1,7 @@
 const initialState = {
     types: [],
     pokes: [],
-    filtered: [],
-    ordered: [],
+    unfiltered: [],
     detail: {},
     current: 0,
     showPokes: []
@@ -13,12 +12,14 @@ const rootReducer = (state = initialState, { type, payload }) => {
         case 'ADD_POKE':
             return {
                 ...state,
-                pokes: [...state.pokes, payload]
+                pokes: [...state.pokes, payload],
+                unfiltered: [...state.pokes, payload]
             }
         case 'SET_POKES':
             return {
                 ...state,
                 pokes: payload,
+                unfiltered: payload,
                 showPokes: payload.slice(0, 12)
             }
         case 'SET_TYPES':
@@ -43,27 +44,45 @@ const rootReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 detail: payload
             }
-    
+
 
         case 'FILTER':
-            return {
-                ...state,
-                myFavorites: state.allCharacters.filter(char => char.gender === payload)
+            if (payload === 'all') {
+                return {
+                    ...state,
+                    pokes: state.unfiltered,
+                    showPokes: state.unfiltered.slice(0, 12),
+                    current: 0
+                }
             }
-        case 'ORDER':
-            const orderCopy = [...state.allCharacters]
-            const ordered = orderCopy.sort((a, b) => {
-                if (a.id > b.id) {
-                    return payload === 'Ascendente' ? 1 : -1
-                }
-                if (a.id < b.id) {
-                    return payload === 'Ascendente' ? -1 : 1
-                }
-                else return 0
-            })
+            let filtered = []
+            if (payload === 'custom') filtered = state.unfiltered.filter(poke => isNaN(poke.id))
+            else if (payload === 'api') filtered = state.unfiltered.filter(poke => !isNaN(poke.id))
+            else filtered = state.unfiltered.filter(poke => poke.types.includes(payload))
             return {
                 ...state,
-                myFavorites: ordered
+                pokes: filtered,
+                showPokes: filtered.slice(0, 12),
+                current: 0
+            }
+
+        case 'ORDER':
+            const orderCopy = [...state.pokes]
+            let ordered = []
+            if (payload.field == 'attack') {
+                payload.order === 'upward'?
+                ordered = orderCopy.sort((a,b) => a.attack-b.attack)
+                : ordered = orderCopy.sort((a,b) => b.attack -a.attack)
+            }else{
+                payload.order === 'upward'?
+                ordered = orderCopy.sort((a,b) => a.name.localeCompare(b.name))
+                : ordered = orderCopy.sort((a,b) => b.name.localeCompare(a.name))
+            }
+
+            return {
+                ...state,
+                pokes: ordered,
+                showPokes: ordered.slice(0, 12),
             }
 
 

@@ -1,0 +1,53 @@
+input{
+    padding: 5px;
+    margin: 5px;
+    width: 200px;
+}
+
+label{
+    color: orange;
+   
+}
+
+form{
+    align-self: center;
+
+}
+fieldset{
+    width: 300px;
+    display: inline;
+}
+
+.warning{
+    border: solid red 2px;
+    border-radius: 0.2em;
+}
+
+.danger{
+    font-size: 10px; 
+    color: red;
+}
+.inputsgroup{
+    display: inline-flex;
+   
+}
+.container{
+    width: 80%;
+    margin-bottom: 100px;
+}
+.submit{
+    padding: 10px;
+    margin: 10px;
+}
+
+.fieldDiv{
+    margin-left: 50px;
+}
+
+.check{
+    padding: 5px;
+}
+label{
+    display: inline-block;
+    width: 80px;
+  }

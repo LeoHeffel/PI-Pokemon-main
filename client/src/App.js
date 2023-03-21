@@ -1,9 +1,9 @@
 import './App.css';
-import Home from './components/Home.jsx';
-import Landing from './components/Landing.jsx';
-import Details from './components/Details.jsx';
-import Form from './components/Form.jsx';
-import NavBar from './components/NavBar.jsx';
+import Home from './components/home/Home.jsx';
+import Landing from './components/landing/Landing.jsx';
+import Details from './components/details/Details.jsx';
+import Form from './components/form/Form.jsx';
+import NavBar from './components/navBar/NavBar.jsx';
 import { useNavigate, Route, Routes, useLocation } from 'react-router-dom'
 
 
