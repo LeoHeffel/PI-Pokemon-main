@@ -10,18 +10,16 @@ const saveTypesApi = async () => {
     } catch (error) {
         throw error
     }
-
 }
 
 const getTypes = async (req, res) => {
-try {
-     let types = await Type.findAll()
-    if (!types.length) types = await saveTypesApi()
-    res.status(200).send(types)
-} catch (error) {
-    res.status(400).send({message:error.message } )
-}
-   
+    try {
+        let types = await Type.findAll()
+        if (!types.length) types = await saveTypesApi()
+        res.status(200).send(types)
+    } catch (error) {
+        res.status(400).send({ message: error.message })
+    }
 }
 
 module.exports = { getTypes }

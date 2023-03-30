@@ -1,19 +1,10 @@
 const axios = require('axios');
 const { Pokemon, Type } = require('../db.js')
+const pokeNameExist = require('../helpers/pokeNameExist.js')
 
-let arrNames = []//agiliza las respuestas del server
-let apiPokesData = []
 
-const pokeNameExist = async (name) => {
 
-    name = name.toLowerCase()
-    if (!arrNames.length) {
-        const { data } = await axios(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=-1}`)
-        data.results.map(poke => arrNames.push(poke.name))
-    }
-    let existent = arrNames.find(element => element === name)
-    return existent ? true : false
-}
+let apiPokesData = []//agiliza las respuestas del server
 
 const getApiPokes = async (pag = 0, count = 150) => {
     try {
@@ -72,15 +63,11 @@ getAll = async (req, res) => {
                 })
                 data = data2.concat(data)
             }
-
-            res.send(data)
+            res.status(200).send(data)
         }
-
-
     } catch (error) {
-        res.send(error)
+        res.status(400).send(error)
     }
-
 }
 
 
@@ -91,7 +78,6 @@ getById = async (req, res) => {
         if (isNaN(idPokemon)) {
             //busca en la bd ya que los id de la api son numericos
             let findById = await Pokemon.findByPk(idPokemon)
-
             if (findById) {
                 const getTypes = await findById.getTypes()
                 const types = getTypes.map(el => el.dataValues.name)
@@ -129,10 +115,7 @@ getById = async (req, res) => {
 
 getByName = async (req, res) => {
     try {
-
         let { name } = req.query
-
-        if (!name) return res.status(400).send({ message: 'name must be provided' })
         name = name.toLowerCase()
         //busca en el array de names para prevenir error 404
         if (await pokeNameExist(name)) {
