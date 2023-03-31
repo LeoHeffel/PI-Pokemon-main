@@ -1,4 +1,4 @@
-import {FILTER, SET_POKES,SET_TYPES,SHOW_NEXT,SHOW_PREVIOUS,ORDER,DETAIL_POKE,ADD_POKE,ERROR, CLEAR} from './types.js'
+import {FILTER, SET_POKES,SET_TYPES,SHOW_NEXT,SHOW_PREVIOUS, SHOW_PAGE,ORDER,DETAIL_POKE,ADD_POKE,ERROR, CLEAR} from './types.js'
 import axios from 'axios'
 
 
@@ -21,6 +21,13 @@ export const orderCards = (field, order) => {
 export const showNext = () => {
     return {
         type: SHOW_NEXT,
+    }
+}
+
+export const showPage= (page) => {
+    return {
+        type: SHOW_PAGE,
+        payload:page
     }
 }
 export const showPrevious = () => {

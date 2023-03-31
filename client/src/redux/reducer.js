@@ -1,4 +1,4 @@
-import { FILTER, SET_POKES, SET_TYPES, SHOW_NEXT, SHOW_PREVIOUS, ORDER, DETAIL_POKE, ADD_POKE, ERROR ,CLEAR} from './types.js'
+import { FILTER, SET_POKES, SET_TYPES, SHOW_NEXT,SHOW_PAGE, SHOW_PREVIOUS, ORDER, DETAIL_POKE, ADD_POKE, ERROR ,CLEAR} from './types.js'
 
 const initialState = {
     types: [],
@@ -35,14 +35,20 @@ const rootReducer = (state = initialState, { type, payload }) => {
         case SHOW_NEXT:
             return {
                 ...state,
-                current: state.current + 12,
-                showPokes: state.pokes.slice(state.current + 12, state.current + 24)
+                current: state.current + 1,
+                showPokes: state.pokes.slice((state.current +1)* 12, ((state.current +1)*12)+12)
             }
         case SHOW_PREVIOUS:
             return {
                 ...state,
-                current: state.current - 12,
-                showPokes: state.pokes.slice(state.current - 12, state.current)
+                current: state.current - 1,
+                showPokes: state.pokes.slice(((state.current )*12)-12, (state.current )* 12)
+            }
+            case SHOW_PAGE:
+            return {
+                ...state,
+                current: payload,
+                showPokes: state.pokes.slice( payload *12, (payload*12 )+ 12)
             }
         case DETAIL_POKE:
             return {
@@ -86,6 +92,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 pokes: ordered,
                 showPokes: ordered.slice(0, 12),
+                current: 0
             }
         case ERROR:
             return {

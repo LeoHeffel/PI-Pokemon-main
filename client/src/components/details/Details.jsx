@@ -6,51 +6,40 @@ import { getPokeDetail } from '../../redux/actions.js'
 import Loading from "../loading/Loading.jsx";
 
 
-
-
-export default function Details(props) {
+export default function Details() {
   const { detailId } = useParams()
-  const [poke, setPoke] = useState(null)
-
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const pokeDetail = useSelector((state) => state.detail)
-
-
-
-
-  const navigate = useNavigate()
+  const [poke, setPoke] = useState(null)
 
   useEffect(() => {
     if (detailId) dispatch(getPokeDetail(detailId))
   }, [detailId])
 
   useEffect(() => {
-    if (pokeDetail.id == detailId) setPoke(pokeDetail)
+    if (pokeDetail.id == detailId) setPoke(pokeDetail)//es para prevenir que se muestre el detalle anterior mientras carga
   }, [pokeDetail])
-
 
 
   return (<>
     <Container>
       {poke ? <><StyledDiv>
-
         <h1> {poke.name}</h1>
-          <hr></hr>
+        <hr></hr>
         <DivStats>
-          <h2><Img src="/img/key.png"/> ID: {poke.id}</h2>
-          <h2> <Img src="/img/hp.png"/>  Vida: {poke.hp}</h2>
-          <h2><Img src="/img/attack.png"/>  Ataque: {poke.attack}</h2>
-          <h2> <Img src="/img/defense.png"/> Defensa: {poke.defense}</h2>
-          <h2> <Img src="/img/speed.png"/> Velocidad: {poke.speed}</h2>
-          <h2><Img src="/img/height.png"/> Altura: {poke.height}</h2>
-          <h2><Img src="/img/weight.png"/>  Peso: {poke.weight}</h2>
-          <h2><Img src="/img/type.png"/> { poke.types.length>1? 'Tipos': 'Tipo'}: {poke.types.toString().replace(/,/g, " - ")}</h2>
+          <h2><Img src="/img/key.png" /> ID: {poke.id}</h2>
+          <h2> <Img src="/img/hp.png" />  Vida: {poke.hp}</h2>
+          <h2><Img src="/img/attack.png" />  Ataque: {poke.attack}</h2>
+          <h2> <Img src="/img/defense.png" /> Defensa: {poke.defense}</h2>
+          <h2> <Img src="/img/speed.png" /> Velocidad: {poke.speed}</h2>
+          <h2><Img src="/img/height.png" /> Altura: {poke.height}</h2>
+          <h2><Img src="/img/weight.png" />  Peso: {poke.weight}</h2>
+          <h2><Img src="/img/type.png" /> {poke.types.length > 1 ? 'Tipos' : 'Tipo'}: {poke.types.toString().replace(/,/g, " - ")}</h2>
         </DivStats>
-
-          <StyledImg src={poke.image} alt={`imagen de ${poke.name}`} />
-
+        <StyledImg src={poke.image} alt={`imagen de ${poke.name}`} />
       </StyledDiv>
-   </> : <Loading />}
+      </> : <Loading />}
     </Container>
     <Button onClick={() => navigate('/home')}>Volver</Button>
 
@@ -94,7 +83,7 @@ const StyledDiv = styled.div`
   text-transform: uppercase;
 `
 const StyledImg = styled.img`
-margin: 50px;
+  margin: 50px;
   height:30vh;
   max-width: 35%;
   float: right;
@@ -102,22 +91,22 @@ margin: 50px;
 
 
 const Container = styled.div`
-    display : flex;
-    min-width: 1000px;
-    margin-top: 10px;
-    margin-left:auto;
-    margin-right:auto;
-    justify-content:center;
+  display : flex;
+  min-width: 1000px;
+  margin-top: 10px;
+  margin-left:auto;
+  margin-right:auto;
+  justify-content:center;
 `
 const DivStats = styled.div`
-margin-left: 30px;
-border-radius: 10px;
-text-align: left; 
-float: left;
-color: black;
-text-transform: capitalize;
+  margin-left: 30px;
+  border-radius: 10px;
+  text-align: left; 
+  float: left;
+  color: black;
+  text-transform: capitalize;
 `
 
 const Img = styled.img`
-height: 20px;
+  height: 20px;
 `

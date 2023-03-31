@@ -11,7 +11,7 @@ export default function SearchBar() {
    const [name, setName] = useState("")
    const [modal, setModal] = useState(false)
    const [message, setMessage] = useState('')
-
+   const [image, setImage] = useState('')
 
    const dispatch = useDispatch()
    const pokeDetail = useSelector((state) => state.detail)
@@ -29,6 +29,7 @@ export default function SearchBar() {
       }   
       else {
          setMessage('Ingrese un nombre válido')
+         setImage('/img/pikachuno.png')
          setName('')
          setModal(true)
       }
@@ -39,6 +40,7 @@ export default function SearchBar() {
       }
       if (pokeDetail.message) {
          setMessage(`No se encontró "${name}"`)
+         setImage('/img/pikachuNotFound.png')
          setName('')
          setModal(true)
       }
@@ -48,7 +50,7 @@ export default function SearchBar() {
   }
 
    return (<>
-       {modal &&  <Modal message={message} img={'/img/pikachuno.png'}  onClose={handleClose}> </Modal>}
+       {modal &&  <Modal message={message} img={image}  onClose={handleClose}> </Modal>}
       <Div >
          <Input type='text' placeholder="Buscar" value={name} onChange={handleChange} />
          <Button onClick={() => handleSearch()}>Buscar</Button>

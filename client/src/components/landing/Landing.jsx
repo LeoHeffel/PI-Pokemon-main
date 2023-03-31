@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom'
 
-import styled , { keyframes }from 'styled-components'
+import styled from 'styled-components'
 
 const Landing = () => {
 
@@ -16,21 +16,21 @@ const Landing = () => {
 export default Landing
 
 const LandingDiv = styled.div`
-height: 100vh;
-width: 100%;
-position: absolute;
-top: 0px;
-background-repeat: no-repeat;
-background-size: cover;
-background-image: url('/img/bg.jpg');
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url('/img/bg.jpg');
 `
 
 const Img = styled.img`
-width : 50vh;
-margin: 200px;
-float:left;
-&:hover{
-  transform: translateY(-3%) 
-}
+  width : 50vh;
+  margin: 200px;
+  float:left;
+  &:hover{
+    transform: translateY(-3%) 
+  }
 `
 

@@ -12,7 +12,7 @@ const Modal = ({message,color, onClose, img}) => {
                 <ModalContainer>
                     <Message style={{color}}>
                         <h2>{message}</h2>
-                        <Img src={img} alt="pikachu sorprendido"  />
+                        <Img src={img} alt="pikachu"  />
                     </Message>
                     <Close onClick={onClose}> X</Close>
                 </ModalContainer>
