@@ -16,7 +16,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
         case ADD_POKE:
             return {
                 ...state,
-                newPoke:true,
+                newPoke:payload.name,
                 pokes: [...state.pokes, payload],
                 unfiltered: [...state.pokes, payload]
             }

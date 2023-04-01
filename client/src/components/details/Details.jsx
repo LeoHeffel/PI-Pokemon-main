@@ -79,14 +79,16 @@ const StyledDiv = styled.div`
   border: solid gray 2px;
   border-radius: 30px;
   margin:20px;
+  position:relative;
   box-shadow: 5px 4px 6px 0px #253f9a, 5px 5px 10px 1px #000;
   text-transform: uppercase;
 `
 const StyledImg = styled.img`
-  margin: 50px;
-  height:30vh;
-  max-width: 35%;
-  float: right;
+  max-height:350px;
+  width:25vw;
+  position: absolute;
+  bottom: 20px;
+  right:20px
 `
 
 

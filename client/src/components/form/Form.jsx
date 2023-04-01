@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { postPoke ,clearError} from '../../redux/actions.js'
+import { postPoke, clearError } from '../../redux/actions.js'
 import Modal from '../modal/Modal.jsx';
 import styled from 'styled-components';
 
@@ -11,25 +11,67 @@ const Form = () => {
     const dispatch = useDispatch()
     const types = useSelector((state) => state.types)
     const axiosError = useSelector((state) => state.err)
-    const  axiosSuccess = useSelector((state) => state.newPoke)
+    const axiosSuccess = useSelector((state) => state.newPoke)
+
+
+    useEffect(()=>{
+        return reset()
+    },[])
 
 
     useEffect(() => {
-        if(axiosError){
+        if (axiosError) {
             setMessage(axiosError)
             setImage('/img/pikachuno.png')
             setModal(true)
         }
-      }, [axiosError])
-    
-      useEffect(() => {
-        if(axiosSuccess){
-            setMessage(`${inputs.name} creado!!`)
+    }, [axiosError])
+
+    useEffect(() => {
+        if (axiosSuccess) {
+            setMessage(`${axiosSuccess} creado!!`)
             setImage('/img/pikachuok.png')
             setModal(true)
         }
-      }, [axiosSuccess])
-    
+    }, [axiosSuccess])
+
+
+
+    function reset() {
+        setErrors({
+            name: "",
+            image: "",
+            hp: "",
+            attack: "",
+            defense: "",
+            speed: "",
+            height: "",
+            weight: "",
+            types: ""
+        })
+        setInputs({
+            name: "",
+            image: "",
+            hp: 0,
+            attack: 0,
+            defense: 0,
+            speed: 0,
+            height: 0,
+            weight: 0,
+            types: []
+        })
+        let checkboxes = document.getElementById("form").types;
+        for (let i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = false
+        }
+        dispatch(clearError())
+        setModal(false)
+    }
+
+
+
+
+
 
     function validate(inputs) {
         const regex = /^[A-Z]+$/i
@@ -98,36 +140,13 @@ const Form = () => {
         let errores = Object.entries(errors)
         if (errores.length < 1) {
             dispatch(postPoke(inputs))
-            setErrors({
-                name: "",
-                image: "",
-                hp: "",
-                attack: "",
-                defense: "",
-                speed: "",
-                height: "",
-                weight: "",
-                types: ""
-            })
-            setInputs({
-                name: "",
-                image: "",
-                hp: 0,
-                attack: 0,
-                defense: 0,
-                speed: 0,
-                height: 0,
-                weight: 0,
-                types: []
-            })
+            reset()
         } else {
             setMessage(`Completa correctamente los campos`)
             setImage('/img/pikachuno.png')
             setModal(true)
         }
-
     }
-
 
     const handleClose = () => {
         dispatch(clearError())
@@ -135,7 +154,7 @@ const Form = () => {
     }
 
     return (<>
-        {modal && <Modal message={message}  img={image} onClose={handleClose}> </Modal>}
+        {modal && <Modal message={message} img={image} onClose={handleClose}> </Modal>}
         <div  >
             <form id='form'>
                 <Container >
@@ -145,42 +164,42 @@ const Form = () => {
                             <label >Nombre:</label>
                             <Input name='name' placeholder='Escribe el nombre...' type={'text'} value={inputs.name} onChange={handleChange} ></Input>
                         </FieldDiv>
-                            <P >{errors.name}</P>
+                        <P >{errors.name}</P>
                         <FieldDiv>
                             <label >Imagen:</label>
                             <Input name='image' placeholder='Ingrese la url...' type={'text'} value={inputs.image} onChange={handleChange}></Input>
                         </FieldDiv>
-                            <P>{errors.image}</P>
+                        <P>{errors.image}</P>
                         <FieldDiv>
                             <label >Vida:  </label>
                             <Input name='hp' type={'number'} value={inputs.hp} onChange={handleChange}></Input>
                         </FieldDiv>
-                            <P >{errors.hp}</P>
+                        <P >{errors.hp}</P>
                         <FieldDiv>
                             <label >Ataque:</label>
                             <Input name='attack' type={'number'} value={inputs.attack} onChange={handleChange}></Input>
                         </FieldDiv>
-                            <P >{errors.attack}</P>
+                        <P >{errors.attack}</P>
                         <FieldDiv>
                             <label >Defensa:</label>
                             <Input name='defense' type={'number'} value={inputs.defense} onChange={handleChange}></Input>
                         </FieldDiv>
-                            <P >{errors.defense}</P>
+                        <P >{errors.defense}</P>
                         <FieldDiv>
                             <label >Velocidad:</label>
                             <Input name='speed' type={'number'} value={inputs.speed} onChange={handleChange}></Input>
                         </FieldDiv>
-                            <P >{errors.speed}</P>
+                        <P >{errors.speed}</P>
                         <FieldDiv>
                             <label >Altura:</label>
                             <Input name='height' type={'number'} value={inputs.height} onChange={handleChange}></Input>
                         </FieldDiv>
-                            <P >{errors.height}</P>
+                        <P >{errors.height}</P>
                         <FieldDiv>
                             <label >Peso:</label>
                             <Input name='weight' type={'number'} value={inputs.weight} onChange={handleChange}></Input>
                         </FieldDiv>
-                            <P >{errors.weight}</P>
+                        <P >{errors.weight}</P>
 
                     </FieldSet>
                     <FieldSet>
