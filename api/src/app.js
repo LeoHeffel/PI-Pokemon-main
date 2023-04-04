@@ -27,7 +27,10 @@ server.use((req, res, next) => {
 });
 
 server.use('/', routes);
-
+server.all('*', (req, res) => {
+  res.status(404).send({ message: 'Route not found' })
+  
+})
 // Error catching endware.
 server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   const status = err.status || 500;
