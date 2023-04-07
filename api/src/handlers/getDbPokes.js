@@ -18,7 +18,7 @@ const getAllDbPokes = async () => {
             return data2
         } else return []
     } catch (error) {
-        throw error
+        throw Error(error)
     }
 }
 
@@ -29,7 +29,7 @@ const getDbPokesById = async (idPokemon) => {
         let find = await Pokemon.findByPk(idPokemon,{ include: Type })
         return  organize(find)
     } catch (error) {
-        throw error
+        throw Error(error)
     }
 }
 
@@ -38,7 +38,7 @@ const getDbPokesByName = async (name) => {
         let find = await Pokemon.findOne({ where: { name },include: Type })
          return  organize(find)
     } catch (error) {
-        throw error
+        throw Error(error)
     }
 }
 
@@ -62,7 +62,7 @@ const organize = (poke)=>{
         }
         return null
     } catch (error) {
-        throw error
+        throw Error(error)
     }
 
 }

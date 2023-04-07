@@ -8,7 +8,7 @@ const saveTypesApi = async () => {
         return types
     } catch (error) {
  
-        throw error
+        throw Error(error)
     }
 }
 
@@ -28,7 +28,7 @@ const saveDbPoke = async (poke, types) => {
         )
         return { ...newPoke.dataValues, types: poketypes }
     } catch (error) {
-        throw error
+        throw Error(error)
     }
 }
 
@@ -39,7 +39,7 @@ const saveDbUser = async (user) => {
         
         return { ...newUser.dataValues}
     } catch (error) {
-        throw error
+        throw Error(error)
     }
 }
 

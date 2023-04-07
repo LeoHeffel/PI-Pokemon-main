@@ -22,7 +22,7 @@ const getAllApiPokes = async (pag = 0, count = 150) => {
         })
         return apiPokesData
     } catch (error) {
-        throw error
+        throw Error(error)
     }
 
 }
@@ -47,7 +47,7 @@ const getApiPokesByIdOrName= async (idOrName) => {
         }
         else return null
     } catch (error) {
-        throw error
+        throw Error(error)
     }
 }
 

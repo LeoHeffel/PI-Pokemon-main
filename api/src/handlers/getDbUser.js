@@ -7,7 +7,7 @@ const getDbUsersByName = async (name) => {
         return find
     } catch (error) {
 
-        throw error
+        throw Error(error)
     }
 }
 
@@ -20,7 +20,7 @@ const authUser = async (name, pass) => {
         return null
     } catch (error) {
 
-        throw error
+        throw Error(error)
     }
 }
 
