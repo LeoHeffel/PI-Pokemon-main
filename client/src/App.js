@@ -6,18 +6,21 @@ import Form from './components/form/Form.jsx';
 import NavBar from './components/navBar/NavBar.jsx';
 import Error from './components/error/Error.jsx';
 import {  Route, Routes, useLocation } from 'react-router-dom'
-
+import Login from './components/login/Login.jsx';
 
 
 
 function App() {
   const location = useLocation()
+  let path= location.pathname !== '/' &&location.pathname !== '/login'&&location.pathname !== '/register'
 
   return ( 
     <div className="App">
-       {location.pathname !== '/' && <NavBar  />}
+       {path && <NavBar  />}
       <Routes>
           <Route path='/' element={<Landing />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Login />} />
           <Route path='/home' element={<Home />} />
           <Route path='/new' element={<Form />} />
           <Route path='/detail/:detailId' element={<Details />} />

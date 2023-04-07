@@ -1,5 +1,5 @@
-const { Pokemon, Type } = require('../db.js')
-
+const { Pokemon, Type ,User} = require('../db.js')
+const axios = require('axios');
 const saveTypesApi = async () => {
     try {
         const { data } = await axios('https://pokeapi.co/api/v2/type')
@@ -7,6 +7,7 @@ const saveTypesApi = async () => {
         let types = await Type.bulkCreate(typeNames)
         return types
     } catch (error) {
+ 
         throw error
     }
 }
@@ -31,4 +32,15 @@ const saveDbPoke = async (poke, types) => {
     }
 }
 
-module.exports = {saveDbPoke, saveTypesApi}
+
+const saveDbUser = async (user) => {
+    try {
+        let newUser = await User.create(user)
+        
+        return { ...newUser.dataValues}
+    } catch (error) {
+        throw error
+    }
+}
+
+module.exports = {saveDbPoke, saveTypesApi,saveDbUser}

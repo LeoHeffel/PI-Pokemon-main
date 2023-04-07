@@ -1,4 +1,4 @@
-import { FILTER, SET_POKES, SET_TYPES, SHOW_NEXT,SHOW_PAGE, SHOW_PREVIOUS, ORDER, DETAIL_POKE, ADD_POKE, ERROR ,CLEAR} from './types.js'
+import { FILTER, SET_POKES, SET_TYPES, SHOW_NEXT, SHOW_PAGE, SHOW_PREVIOUS, ORDER, DETAIL_POKE, ADD_POKE, ERROR, CLEAR ,ADD_USER} from './types.js'
 
 const initialState = {
     types: [],
@@ -8,7 +8,8 @@ const initialState = {
     current: 0,
     showPokes: [],
     err: "",
-    newPoke:false
+    newPoke: false,
+    user: null
 }
 
 const rootReducer = (state = initialState, { type, payload }) => {
@@ -16,7 +17,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
         case ADD_POKE:
             return {
                 ...state,
-                newPoke:payload.name,
+                newPoke: payload.name,
                 pokes: [...state.pokes, payload],
                 unfiltered: [...state.pokes, payload]
             }
@@ -36,19 +37,19 @@ const rootReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 current: state.current + 1,
-                showPokes: state.pokes.slice((state.current +1)* 12, ((state.current +1)*12)+12)
+                showPokes: state.pokes.slice((state.current + 1) * 12, ((state.current + 1) * 12) + 12)
             }
         case SHOW_PREVIOUS:
             return {
                 ...state,
                 current: state.current - 1,
-                showPokes: state.pokes.slice(((state.current )*12)-12, (state.current )* 12)
+                showPokes: state.pokes.slice(((state.current) * 12) - 12, (state.current) * 12)
             }
-            case SHOW_PAGE:
+        case SHOW_PAGE:
             return {
                 ...state,
                 current: payload,
-                showPokes: state.pokes.slice( payload *12, (payload*12 )+ 12)
+                showPokes: state.pokes.slice(payload * 12, (payload * 12) + 12)
             }
         case DETAIL_POKE:
             return {
@@ -102,10 +103,14 @@ const rootReducer = (state = initialState, { type, payload }) => {
         case CLEAR:
             return {
                 ...state,
-                newPokeName:false,
+                newPokeName: false,
                 err: ""
             }
-
+            case ADD_USER:
+                return {
+                    ...state,
+                    user: payload,
+                }
         default: return { ...state }
     }
 }

@@ -8,7 +8,7 @@ const Landing = () => {
   return (
     <LandingDiv className='landing'>
         <h1> P.I. Pokemon LeoHeffel</h1>
-       <Link to={'/home'}> <Img src="/img/logo.png" alt="logo" />	</Link>
+       <Link to={'/login'}> <Img src="/img/logo.png" alt="logo" />	</Link>
     </LandingDiv>
   )
 }

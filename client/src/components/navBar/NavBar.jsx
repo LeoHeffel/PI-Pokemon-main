@@ -2,17 +2,31 @@
 import { Link } from "react-router-dom";
 import SearchBar from "../searchBar/SearchBar.jsx";
 import styled from "styled-components";
-
-
+import { setUser} from '../../redux/actions.js';
+import { useDispatch ,useSelector} from 'react-redux';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function NavBar() {
-    
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const user = useSelector((state) => state.user)
+
+    useEffect(()=>{
+        if(!user)navigate('/login')
+    },[user])
+
+    const handleClick = ()=>{
+        sessionStorage.removeItem('user');
+        dispatch(setUser(null))
+    }
     return (
         <StyledNav>
             <Link style={{textDecoration:'none'}} to={'/home'}><Logo src="/img/logo.png"/> </Link>
             <Link style={{textDecoration:'none'}} to={'/new'}><StyledDiv>Crear Nuevo</StyledDiv></Link>
-            
             <SearchBar />
+            <H3>{user}</H3>
+            <StyledDiv onClick={handleClick}>Salir</StyledDiv>
         </StyledNav>
     )
  }
@@ -57,4 +71,10 @@ top: -2px;
 left: 30px;
 height: 100px;
 
+`
+
+
+const H3 = styled.h3`
+color:#ededed;
+text-transform: uppercase;
 `

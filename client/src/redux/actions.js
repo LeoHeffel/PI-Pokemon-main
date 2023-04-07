@@ -1,4 +1,4 @@
-import {FILTER, SET_POKES,SET_TYPES,SHOW_NEXT,SHOW_PREVIOUS, SHOW_PAGE,ORDER,DETAIL_POKE,ADD_POKE,ERROR, CLEAR} from './types.js'
+import {FILTER, SET_POKES,SET_TYPES,SHOW_NEXT,SHOW_PREVIOUS, SHOW_PAGE,ORDER,DETAIL_POKE,ADD_POKE,ERROR, CLEAR, ADD_USER} from './types.js'
 import axios from 'axios'
 
 
@@ -39,6 +39,13 @@ export const showPrevious = () => {
 export const clearError = () => {
     return {
         type: CLEAR,
+    }
+}
+
+export const setUser = (user) => {
+    return {
+        type: ADD_USER,
+        payload: user,
     }
 }
 
@@ -135,15 +142,32 @@ export function postPoke(poke) {
             })
         }
         catch (error) {
-            console.log(error)
             dispatch({
                 type:ERROR,
                 payload:error.response.data.message
             })
         
-        
         }
     }
 }
 
+
+export function LoginOrRegister(user,LOR) {
+
+    return async function (dispatch) {
+        try {
+            const { data } = await axios.post(`http://localhost:3001/user/${LOR}`, user)
+            dispatch({
+                type: ADD_USER,
+                payload: data
+            })
+        }
+        catch (error) {
+            dispatch({
+                type:ERROR,
+                payload:error.response.data.message
+            })
+        }
+    }
+}
 
