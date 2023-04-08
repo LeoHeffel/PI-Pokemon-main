@@ -1,6 +1,8 @@
 const axios = require('axios');
 let apiPokesData = []//agiliza las respuestas del server
 
+
+
 const getAllApiPokes = async (pag = 0, count = 150) => {
     try {
         if (apiPokesData.length) return apiPokesData
