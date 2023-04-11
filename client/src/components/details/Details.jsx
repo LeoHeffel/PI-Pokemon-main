@@ -84,11 +84,12 @@ const StyledDiv = styled.div`
   text-transform: uppercase;
 `
 const StyledImg = styled.img`
-  max-height:350px;
+  max-height:300px;
   width:25vw;
   position: absolute;
   bottom: 20px;
-  right:20px
+  right:20px;
+  z-index:
 `
 
 
