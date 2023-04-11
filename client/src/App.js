@@ -10,7 +10,7 @@ import Login from './components/login/Login.jsx';
 import { useSelector } from 'react-redux';
 import axios from 'axios'
 //axios.defaults.baseURL='http://localhost:3001'
-axios.defaults.baseURL='pi-pokemon-main-production-834b.up.railway.app'
+axios.defaults.baseURL='https://pi-pokemon-main-production-834b.up.railway.app/'
 function App() {
   const location = useLocation()
   
