@@ -8,7 +8,8 @@ import Error from './components/error/Error.jsx';
 import {  Route, Routes, useLocation, Navigate } from 'react-router-dom'
 import Login from './components/login/Login.jsx';
 import { useSelector } from 'react-redux';
-
+import axios from 'axios'
+axios.defaults.baseURL='http://localhost:3001'
 
 function App() {
   const location = useLocation()

@@ -8,7 +8,7 @@ const getAllApiPokes = async (pag = 0, count = 150) => {
         if (apiPokesData.length) return apiPokesData
         let apiPokesPromise = []
         const { data } = await axios(`https://pokeapi.co/api/v2/pokemon?offset=${pag}&limit=${count}`)
-        data.results.map(async poke => {
+        data.results.map( poke => {
             apiPokesPromise.push(axios(poke.url))
         })
         let apiData = await Promise.all(apiPokesPromise)

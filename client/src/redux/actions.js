@@ -52,7 +52,7 @@ export const setUser = (user) => {
 export function getPokeDetail(id) {
     return async function (dispatch) {
         try {
-            const { data } = await axios.get(`http://localhost:3001/pokemons/${id}`)
+            const { data } = await axios.get(`/pokemons/${id}`)
             dispatch({
                 type: DETAIL_POKE,
                 payload: data
@@ -70,7 +70,7 @@ export function getPokeDetail(id) {
 export function searchPoke(name) {
     return async function (dispatch) {
         try {
-            const { data } = await axios.get(`http://localhost:3001/pokemons?name=${name}`)
+            const { data } = await axios.get(`/pokemons?name=${name}`)
 
             dispatch({
                 type: DETAIL_POKE,
@@ -94,7 +94,7 @@ export function searchPoke(name) {
 export function getPokes() {
     return async function (dispatch) {
         try {
-            const { data } = await axios.get(`http://localhost:3001/pokemons/`)
+            const { data } = await axios.get(`/pokemons/`)
 
             dispatch({
                 type: SET_POKES,
@@ -114,7 +114,7 @@ export function getPokes() {
 export function getTypes() {
     return async function (dispatch) {
         try {
-            const { data } = await axios.get(`http://localhost:3001/types/`)
+            const { data } = await axios.get(`/types/`)
             dispatch({
                 type: SET_TYPES,
                 payload: data
@@ -135,7 +135,7 @@ export function postPoke(poke) {
 
     return async function (dispatch) {
         try {
-            const { data } = await axios.post(`http://localhost:3001/pokemons/`, poke)
+            const { data } = await axios.post(`/pokemons/`, poke)
             dispatch({
                 type: ADD_POKE,
                 payload: data
@@ -156,7 +156,7 @@ export function LoginOrRegister(user,LOR) {
 
     return async function (dispatch) {
         try {
-            const { data } = await axios.post(`http://localhost:3001/user/${LOR}`, user)
+            const { data } = await axios.post(`/user/${LOR}`, user)
             dispatch({
                 type: ADD_USER,
                 payload: data
